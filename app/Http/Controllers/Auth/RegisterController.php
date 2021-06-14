@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Classes;
+use App\Models\ClassesUsers;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Subjects;
@@ -52,12 +55,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'role' => ['required'],
             'first_name' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
             'subjects' => ['required'],
+            'classes' => ['required'],
+            'clas' => ['required_if:role,==,student'],
         ]);
     }
 
@@ -70,7 +76,13 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $subjects = Subjects::all();
-        return view('auth.register',compact('subjects'));
+        $classes = Classes::all();
+        $roles = [RoleEnum::TEACHER, RoleEnum::STUDENT];
+        return view('auth.register', [
+            'subjects' => $subjects,
+            'classes' => $classes,
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -88,6 +100,26 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        if ($data['role']) {
+            $user->assignRole($data['role']);
+        }
+
+        if ($data['clas']) {
+            $classUsers = new ClassesUsers();
+            $classUsers->user_id = $user->id;
+            $classUsers->class_id = $data['clas'];
+            $classUsers->save();
+        }
+
+        if ($data['classes']) {
+            foreach($data['classes'] as $class){
+                $classUsers = new ClassesUsers();
+                $classUsers->user_id = $user->id;
+                $classUsers->class_id = $class;
+                $classUsers->save();
+            }
+        }
 
         if ($data['subjects']) {
             foreach($data['subjects'] as $subject){
