@@ -4,7 +4,9 @@
             <div class="card">
                 <div class="card-header">{{ __('Додати Товарqq') }}</div>
                     <div class="card-body">
-                        <form method="get" action="{{ route('/test/updatesubject',[$subject->id]) }}">
+                        <form method="POST" action="{{ route('admin.subjects.update', $subject->id) }}">
+                                @method('PUT')
+                                @csrf
                             <div class="mb-3">
                                 <label class="form-label">Назва предмету</label>
                                 <input value="{{$subject->name}}" name='name' type="text" class="form-control"  >

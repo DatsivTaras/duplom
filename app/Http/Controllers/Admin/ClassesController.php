@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class ClassesController extends Controller
 {
@@ -16,10 +16,25 @@ class ClassesController extends Controller
         ]);
     }
 
+
+
     public function create()
     {
+
         return view('create');
     }
+
+    public function store(Request $request)
+    {
+
+        $classes = new  Classes();
+        $classes->fill($request->all());
+        $classes->save();
+        return redirect('/admin');
+    }
+
+
+
 
     public function show($id)
     {

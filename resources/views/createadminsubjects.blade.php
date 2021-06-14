@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Додати Товарfw') }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admin.classes.store') }}">
+                        <form method="POST" action="{{ route('admin.subjects.store') }}">
                                 @csrf
                             <div class="mb-3">
                                 <label class="form-label">Назва предмету</label>
