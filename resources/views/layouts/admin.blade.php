@@ -93,6 +93,7 @@
                     <nav class="nav flex-column">
                         <a class="nav-link @if(Route::is('admin.classes.*')) active @endif" href="{{ route('admin.classes.index') }}">Класи</a>
                         <a class="nav-link @if(Route::is('admin.users.*')) active @endif" href="{{ route('admin.users.index') }}">Користувачі</a>
+                        <a class="nav-link @if(Route::is('admin.subjects.*')) active @endif" href="{{ route('admin.subjects.index') }}">Предмети</a>
                     </nav>
                 </div>
 

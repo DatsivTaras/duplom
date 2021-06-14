@@ -3,6 +3,7 @@
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Admin\ClassesController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\SubjectsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,13 +50,6 @@ Route::middleware(['auth', 'approved'])->group(function () {
     Route::get('/test/passtest/{id}', [App\Http\Controllers\TestController::class,'passtest'])->name('/test/passtest');
     Route::get('/test/testresult/{id}', [App\Http\Controllers\TestController::class,'testresult'])->name('/test/testresult');
 
-    Route::get('/test/subjects', [App\Http\Controllers\SubjectController::class,'subjects'])->name('/test/subjects');
-    Route::get('/test/createsubject', [App\Http\Controllers\SubjectController::class,'createsubject'])->name('/test/createsubject');
-    Route::get('/test/addsubject', [App\Http\Controllers\SubjectController::class,'addsubject'])->name('/test/addsubject');
-    Route::get('/test/deletesubjects/{id}', [App\Http\Controllers\SubjectController::class,'delete'])->name('/test/deletesubjects');
-    Route::get('/test/editsubject/{id}', [App\Http\Controllers\SubjectController::class,'editsubject'])->name('/test/editsubject');
-    Route::get('/test/updatesubject/{id}', [App\Http\Controllers\SubjectController::class,'updatesubject'])->name('/test/updatesubject');
-
     Route::get('/profile', [App\Http\Controllers\ProfileController::class,'profile'])->name('/profile');
     Route::get('/profile/edit/{id}', [App\Http\Controllers\ProfileController::class,'edit'])->name('/profile/edit');
     Route::get('/profile/update/{id}', [App\Http\Controllers\ProfileController::class,'update'])->name('/profile/update');
@@ -69,7 +63,10 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::resource('/classes', ClassesController::class)->names('admin.classes');
 
         Route::get('/users/approve/{id}', [UsersController::class, 'approve'])->name('admin.approve');
+
         Route::resource('/users', UsersController::class)->names('admin.users');
+
+        Route::resource('/subjects', SubjectsController::class)->names('admin.subjects');
     });
 });
 
