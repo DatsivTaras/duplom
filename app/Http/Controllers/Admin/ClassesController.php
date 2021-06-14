@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Classes;
+use Illuminate\Support\Facades\Request;
 
-use Illuminate\Http\Request;
-use App\Models\Products;
-class ProductsController extends Controller
+class ClassesController extends Controller
 {
     public function index()
     {
-        $products = Products::all();
-        return view ('Products', compact('products'));
+        $classes = Classes::paginate(10);
+        return view ('/admin/classes/index', [
+            'classes' => $classes
+        ]);
     }
 
     public function create()
@@ -18,6 +21,15 @@ class ProductsController extends Controller
         return view('create');
     }
 
+    public function show($id)
+    {
+        $class = Classes::where('id', $id)->firstOrFail();
+        return view('/admin/classes/show', [
+            'class' => $class
+        ]);
+    }
+
+    /*
     public function edit($id)
     {
         $products = Products::where('id','=',$id)->get();
@@ -42,10 +54,12 @@ class ProductsController extends Controller
         return redirect('/product/index');
     }
 
-    public function delete(Request $request)
+*/
+
+    public function destroy(Request $request, $id)
     {
-        $product = Products::find($request->id);
-        $product->delete();
-        return redirect('/product/index');
+        $class = Classes::find($id);
+        $class->delete();
+        return redirect('/admin/classes');
     }
 }
